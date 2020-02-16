@@ -17,32 +17,43 @@ public class StringHashBreakerThread extends Thread {
         this.plaintext = "(unknown)";
     }
 
-    private String randomString() {
-        Random r = new Random();
-        int numLetters = r.nextInt(15) + 1;
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < numLetters; i++) {
-            builder.append(ALPHABET.charAt(r.nextInt(ALPHABET.length())));
+    void printAllKLength(char[] set, int k) {
+        if(!broken) {
+            int n = set.length;
+            printAllKLengthRec(set, "", n, k);
         }
-        return builder.toString();
     }
 
-    private String breakHash() {
-        String random = "";
-        while (!broken) {
-            random = randomString();
-            StringHash hash = new StringHash(random);
+    void printAllKLengthRec(char[] set,  String prefix, int n, int k) {
+        if (k == 0) {
+            StringHash hash = new StringHash(prefix);
             attempts++;
-            if (hash.getHash().equals(this.hash)) {
-                broken = true;
+            if(hash.getHash().equals(this.hash)) {
+                this.plaintext = prefix;
+                System.out.println("Found! " + hash.getPlainText());
+                this.broken = true;
+            }
+            return;
+        }
+        for (int i = 0; i < n; ++i) {
+            String newPrefix = prefix + set[i];
+            if(!broken) {
+                printAllKLengthRec(set, newPrefix, n, k - 1);
             }
         }
-        return random;
+    }
+
+    private void breakHash() {
+        while(!broken) {
+            for(int i = 1; i < 12; i++) {
+                printAllKLength(ALPHABET.toCharArray(), i);
+            }
+        }
     }
 
     @Override
     public void run() {
-        this.plaintext = breakHash();
+        breakHash();
     }
 
     public long getAttempts() {
