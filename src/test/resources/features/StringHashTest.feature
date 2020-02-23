@@ -14,3 +14,8 @@ Feature: Test correctness of hashing algorithm
     Given the plaintext "debug"
     When the string is hashed
     Then the hash is "-1510899478"
+
+  Scenario: Hash handles special characters
+    Given the plaintext "`!|VAQ"
+    When the string is hashed
+    Then the hash is "836025351"
