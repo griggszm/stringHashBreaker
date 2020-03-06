@@ -26,11 +26,11 @@ public class StringHashBreakerThread extends Thread {
 
     void printAllKLengthRec(char[] set,  String prefix, int n, int k) {
         if (k == 0) {
-            StringHash hash = new StringHash(prefix);
+            String hash = SStrHash2.SStrHash2(prefix);
             attempts++;
-            if(hash.getHash().equals(this.hash)) {
+            if(hash.equals(this.hash)) {
                 this.plaintext = prefix;
-                System.out.println("Found! " + hash.getPlainText());
+                System.out.println("Found! " + hash);
                 this.broken = true;
             }
             return;

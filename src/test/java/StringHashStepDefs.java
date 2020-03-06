@@ -6,7 +6,7 @@ import org.junit.Assert;
 public class StringHashStepDefs {
 
     private String plaintext;
-    private StringHash hash;
+    private String hash;
 
     @Given("the plaintext {string}")
     public void thePlaintext(String text) {
@@ -15,11 +15,11 @@ public class StringHashStepDefs {
 
     @When("the string is hashed")
     public void theStringIsHashed() {
-        hash = new StringHash(plaintext);
+        hash = SStrHash2.SStrHash2(plaintext);
     }
 
     @Then("the hash is {string}")
     public void theHashIs(String realHash) {
-        Assert.assertEquals("Expected hash: " + realHash + " but was actually " + hash.getHash(), realHash, hash.getHash());
+        Assert.assertEquals("Expected hash: " + realHash + " but was actually " + hash, realHash, hash);
     }
 }

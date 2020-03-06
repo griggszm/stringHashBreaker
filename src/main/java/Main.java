@@ -25,8 +25,7 @@ public class Main {
         System.out.println("Enter string to compute SStrHash2 for (or press enter to exit)");
         String plaintext = in.nextLine();
         if(!plaintext.isEmpty()) {
-            StringHash hash = new StringHash(plaintext);
-            System.out.println(hash.toString());
+            System.out.println(SStrHash2.SStrHash2(plaintext));
             computeHash(in);
         }
     }
