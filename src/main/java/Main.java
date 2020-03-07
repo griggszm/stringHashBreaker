@@ -22,10 +22,10 @@ public class Main {
     }
 
     private static void computeHash(Scanner in) {
-        System.out.println("Enter string to compute SStrHash2 for (or press enter to exit)");
+        System.out.println("Enter string to compute hash for (or press enter to exit)");
         String plaintext = in.nextLine();
         if(!plaintext.isEmpty()) {
-            System.out.println(SStrHash2.SStrHash2(plaintext));
+            System.out.println(SStrHash2.hash(plaintext));
             computeHash(in);
         }
     }

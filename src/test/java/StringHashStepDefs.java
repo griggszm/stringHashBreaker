@@ -15,7 +15,7 @@ public class StringHashStepDefs {
 
     @When("the string is hashed")
     public void theStringIsHashed() {
-        hash = SStrHash2.SStrHash2(plaintext);
+        hash = SStrHash2.hash(plaintext);
     }
 
     @Then("the hash is {string}")

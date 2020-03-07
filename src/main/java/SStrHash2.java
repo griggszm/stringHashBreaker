@@ -1,3 +1,6 @@
+/**
+ * Purpose: Calculate the SStrHash2 equivalent of a plaintext String
+ */
 public class SStrHash2 {
 
     private static final long[] p = {0, 8, 16, 24, 0, 8, 16, 24, 8, 16, 24};
@@ -7,6 +10,9 @@ public class SStrHash2 {
     /**
      * Converts a signed int (represented as long)
      * into an unsigned int (represented as long)
+     *
+     * This is necessary because this algorithm uses
+     * numeric overflow as a feature.
      *
      * @param input signed int (long)
      * @return  uint32 representation
@@ -18,7 +24,7 @@ public class SStrHash2 {
     /**
      * Bit manipulation calculates the resulting SStrHash from a
      *
-     * @param a The SStrHash2 a value
+     * @param a The hash a value
      * @return  The resulting hash
      */
     private static long calculateFinal(long a) {
@@ -39,7 +45,6 @@ public class SStrHash2 {
         extracted[2] = charIndexes[index+offset+2];
         extracted[3] = charIndexes[index+offset+3];
         return java.nio.ByteBuffer.wrap(extracted).order(java.nio.ByteOrder.LITTLE_ENDIAN).getInt();
-
     }
 
     /**
@@ -47,10 +52,9 @@ public class SStrHash2 {
      *
      * @return  Hash of Plaintext String
      */
-    public static String SStrHash2(String plainText) {
+    public static String hash(String plainText) {
         int len = plainText.length();
-        byte[] charIndexes = getUsableByteArray(plainText, len);
-        //byte[] charIndexes2 = plainText.toUpperCase().replace((char)47, (char)92).getBytes();
+        byte[] charIndexes = prepareByteArrayFromPlaintext(plainText, len);
 
         int index = 0;
         long a = 0;
@@ -85,6 +89,7 @@ public class SStrHash2 {
             index += 12;
             len -= 12;
         }
+
         long[] d = {c, b, a + len+index /* original length of string */};
         for(int j = 0; j < charIndexes.length - index; j++) {
             d[(j/4)] += charIndexes[index+j] << p[j];
@@ -115,7 +120,7 @@ public class SStrHash2 {
      * @param len   Length of string
      * @return  Usable byte array for hashing
      */
-    private static byte[] getUsableByteArray(String plainText, int len) {
+    private static byte[] prepareByteArrayFromPlaintext(String plainText, int len) {
         byte[] charIndexes = new byte[len];
         for(int i = 0; i < plainText.length(); i++) {
             char c = plainText.charAt(i);

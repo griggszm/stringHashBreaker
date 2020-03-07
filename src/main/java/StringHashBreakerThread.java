@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class StringHashBreakerThread extends Thread {
 
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -26,7 +22,7 @@ public class StringHashBreakerThread extends Thread {
 
     void printAllKLengthRec(char[] set,  String prefix, int n, int k) {
         if (k == 0) {
-            String hash = SStrHash2.SStrHash2(prefix);
+            String hash = SStrHash2.hash(prefix);
             attempts++;
             if(hash.equals(this.hash)) {
                 this.plaintext = prefix;
