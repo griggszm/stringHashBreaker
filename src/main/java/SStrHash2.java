@@ -2,6 +2,7 @@ public class SStrHash2 {
 
     private static final long[] p = {0, 8, 16, 24, 0, 8, 16, 24, 8, 16, 24};
     private static final long[] r = {-13, 8, -13, -12, 16, -5, -3, 10, -15};
+    private static final long finalCalcPart = (1L << 32L);
 
     /**
      * Converts a signed int (represented as long)
@@ -21,7 +22,7 @@ public class SStrHash2 {
      * @return  The resulting hash
      */
     private static long calculateFinal(long a) {
-        return a - ((1L << 32L) * (a >> 31L));
+        return a - (finalCalcPart * (a >> 31L));
     }
 
     /**
