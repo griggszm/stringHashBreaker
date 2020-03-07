@@ -38,10 +38,14 @@ public class Main {
         exec.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Attempts: " + thread.getAttempts());
+                    System.out.println("Attempts: " + thread.getAttempts());
             }
         }, 0, 5, TimeUnit.SECONDS);
+        long time = System.currentTimeMillis();
         thread.run();
-        System.out.println(thread.getPlaintext());
+        System.out.println("Attempts: " + thread.getAttempts());
+        System.out.println("Plaintext collision: " + thread.getPlaintext());
+        System.out.println("Time taken: " + (System.currentTimeMillis() - time) + " ms");
+        exec.shutdown();
     }
 }

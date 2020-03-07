@@ -19,3 +19,8 @@ Feature: Test correctness of hashing algorithm
     Given the plaintext "`!|VAQ"
     When the string is hashed
     Then the hash is "836025351"
+
+  Scenario: Hash collides with known
+    Given the plaintext "ac3w2w7"
+    When the string is hashed
+    Then the hash is "836025351"

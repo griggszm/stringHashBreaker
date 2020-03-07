@@ -1,6 +1,6 @@
 public class StringHashBreakerThread extends Thread {
 
-    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-";
     private long attempts = 0;
     private boolean broken = false;
 
