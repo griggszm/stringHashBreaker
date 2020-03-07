@@ -48,6 +48,28 @@ public class SStrHash2 {
     }
 
     /**
+     * Gets a byte array of uppercase letters and slash replaced with backslash
+     *
+     * @param plainText Text string
+     * @param len   Length of string
+     * @return  Usable byte array for hashing
+     */
+    private static byte[] prepareByteArrayFromPlaintext(String plainText, int len) {
+        byte[] charIndexes = new byte[len];
+        for(int i = 0; i < plainText.length(); i++) {
+            char c = plainText.charAt(i);
+            if(97 <= c && c <= 122) {
+                charIndexes[i] = (byte)(c - 32);
+            } else if(c == 47) {
+                charIndexes[i] = (byte)92;
+            } else {
+                charIndexes[i] = (byte)c;
+            }
+        }
+        return charIndexes;
+    }
+
+    /**
      * Converts the given String into a Hash.
      *
      * @return  Hash of Plaintext String
@@ -112,27 +134,4 @@ public class SStrHash2 {
         }
         return "" + calculateFinal(intToUnsignedInt(a));
     }
-
-    /**
-     * Gets a byte array of uppercase letters and slash replaced with backslash
-     *
-     * @param plainText Text string
-     * @param len   Length of string
-     * @return  Usable byte array for hashing
-     */
-    private static byte[] prepareByteArrayFromPlaintext(String plainText, int len) {
-        byte[] charIndexes = new byte[len];
-        for(int i = 0; i < plainText.length(); i++) {
-            char c = plainText.charAt(i);
-            if(97 <= c && c <= 122) {
-                charIndexes[i] = (byte)(c - 32);
-            } else if(c == 47) {
-                charIndexes[i] = (byte)92;
-            } else {
-                charIndexes[i] = (byte)c;
-            }
-        }
-        return charIndexes;
-    }
-
 }
