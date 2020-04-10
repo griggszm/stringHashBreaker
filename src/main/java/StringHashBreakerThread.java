@@ -7,20 +7,39 @@ public class StringHashBreakerThread extends Thread {
     private String hash;
     private String plaintext;
 
+    /**
+     * Makes a new Stringhash Breaker
+     *
+     * @param hash  Hash to be broken
+     */
     public StringHashBreakerThread(String hash) {
         super();
         this.hash = hash;
         this.plaintext = "(unknown)";
     }
 
-    void printAllKLength(char[] set, int k) {
+    /**
+     * Generates combinations until it finds the plaintext
+     *
+     * @param set   Charset
+     * @param k     Word length
+     */
+    void tryCombinations(char[] set, int k) {
         if(!broken) {
             int n = set.length;
-            printAllKLengthRec(set, "", n, k);
+            tryCombinationsRecursive(set, "", n, k);
         }
     }
 
-    void printAllKLengthRec(char[] set,  String prefix, int n, int k) {
+    /**
+     * Recursive helper for trying Stringhash combinations
+     *
+     * @param set       Charset
+     * @param prefix    Partially generated word
+     * @param n         Current letter to try
+     * @param k         Word length
+     */
+    void tryCombinationsRecursive(char[] set, String prefix, int n, int k) {
         if (k == 0) {
             String hash = SStrHash2.hash(prefix);
             attempts++;
@@ -34,24 +53,35 @@ public class StringHashBreakerThread extends Thread {
         for (int i = 0; i < n; ++i) {
             String newPrefix = prefix + set[i];
             if(!broken) {
-                printAllKLengthRec(set, newPrefix, n, k - 1);
+                tryCombinationsRecursive(set, newPrefix, n, k - 1);
             }
         }
     }
 
+    /**
+     * Loops until the hash is broken, attempting combinations.
+     */
     private void breakHash() {
         while(!broken) {
             for(int i = 1; i < 12; i++) {
-                printAllKLength(ALPHABET.toCharArray(), i);
+                tryCombinations(ALPHABET.toCharArray(), i);
             }
         }
     }
 
+    /**
+     * Runs the thread until hash is broken
+     */
     @Override
     public void run() {
         breakHash();
     }
 
+    /**
+     * Gets the current attempt count of the thread.
+     *
+     * @return  Attempt count
+     */
     public long getAttempts() {
         return attempts;
     }
