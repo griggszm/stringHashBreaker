@@ -56,12 +56,10 @@ public class Main {
     }
 
     private static void generateTable(Scanner in) {
-        try {
             System.out.print("Enter output file name: ");
             String path = in.nextLine();
-            PrintWriter writer = new PrintWriter(new File(path));
 
-            TableGeneratorThread thread = new TableGeneratorThread(writer);
+            TableGeneratorThread thread = new TableGeneratorThread(path);
             ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
             exec.scheduleAtFixedRate(new Runnable() {
                 @Override
@@ -71,9 +69,6 @@ public class Main {
             }, 0, 5, TimeUnit.SECONDS);
             long time = System.currentTimeMillis();
             thread.run();
-        } catch (IOException ex) {
-            System.err.println("Could not write to file");
-            ex.printStackTrace();
-        }
+
     }
 }

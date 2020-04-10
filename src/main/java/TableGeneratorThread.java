@@ -1,17 +1,48 @@
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TableGeneratorThread extends Thread {
 
     private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_-";
     private long attempts = 0;
-    private PrintWriter writer;
+    private String basePath;
+    private List<PrintWriter> printWriters;
+    private static final int DIVISIONS = 20;
 
-    public TableGeneratorThread(PrintWriter writer) {
+    public TableGeneratorThread(String basePath) {
         super();
-        this.writer = writer;
+        this.basePath = basePath;
+        this.printWriters = new ArrayList<>();
+        try {
+            for (int i = 0; i < DIVISIONS + 1; i++) {
+                printWriters.add(new PrintWriter(basePath + i + ".txt"));
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Cannot create files");
+        }
+    }
+
+    private PrintWriter getWriterFor(String hash) {
+        long converted = Long.parseLong(hash);
+        long steps = Integer.MAX_VALUE / (DIVISIONS / 2);
+        int whichWriter = 0;
+        if(converted > 0) {
+            whichWriter += (DIVISIONS / 2);
+        } else {
+            converted = -converted;
+        }
+        while(converted > 0) {
+            converted -= steps;
+            whichWriter++;
+        }
+        return printWriters.get(whichWriter);
     }
 
     private void saveToFile(String plaintext, String hash) {
+        PrintWriter writer = getWriterFor(hash);
         writer.println(hash + "|" + plaintext);
     }
 
